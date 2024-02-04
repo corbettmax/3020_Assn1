@@ -82,7 +82,7 @@ namespace _3020_assn1
                 }
             }
             P.RemoveAt(i);
-            S.RemoveWebPage(name, V[S.FindPage(name)].name); // NOT DONE
+            S.RemoveWebPage(name, P[FindPage(name)].Server); // NOT DONE
             return true;
         }
         return false;
