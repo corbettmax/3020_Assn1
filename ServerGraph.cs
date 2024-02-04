@@ -176,13 +176,7 @@ public class ServerGraph
                         components++;
 
                         // call depthfirstsearch to visit all servers connected to the components
-                        
-                        visited[j] = true;    // Output vertex when marked as visited
-                        Console.WriteLine(j);
-
-                        for (int i = 0; i < NumServers; i++)    // Visit next unvisited adjacent vertex
-                            if (!visited[i] && E[j, i] == true)
-                                DepthFirstSearch(i, visited);
+                        DepthFirstSearch(j, visited);
                     }
                 }
             }
@@ -199,16 +193,18 @@ public class ServerGraph
         return critServers;
     }
 
+    
 
-    private void DepthFirstSearch(int j, bool[] visited)
-    { 
+    private void DepthFirstSearch(int i, bool[] visited)
+    {
+        int j;
 
-        visited[j] = true;    // Output vertex when marked as visited
-        Console.WriteLine(j);
+        visited[i] = true;    // Output vertex when marked as visited
+        Console.WriteLine(i);
 
-        for (int i = 0; i < NumServers; i++)    // Visit next unvisited adjacent vertex
-            if (!visited[i] && E[j, i] == true)
-                DepthFirstSearch(i, visited);
+        for (j = 0; j < NumServers; j++)    // Visit next unvisited adjacent vertex
+            if (!visited[j] && E[i, j] == true)
+                DepthFirstSearch(j, visited);
     }
 
     // 6 marks
