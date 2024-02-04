@@ -8,7 +8,12 @@ public class ServerGraph
     {
         public string Name;
         public List<WebPage> P;
-        //tofinish
+        
+        public WebServer(string name, List<WebPage> p)
+        {
+            Name = name;
+            P = p;
+        }
     }
     private WebServer[] V;
     private bool[,] E;
@@ -51,7 +56,7 @@ public class ServerGraph
         }   
         if (FindServer(name) == -1)
         {
-            V[NumServers] = new WebServer;
+            V[NumServers] = new WebServer(name, new List<WebPage>());
             for (int i = 0; i <= NumServers; i++)
             {
                 E[i, NumServers] = false;
@@ -66,9 +71,23 @@ public class ServerGraph
     // Add a webpage to the server with the given name
     // Return true if successful; otherwise return false
     public bool AddWebPage(WebPage w, string name)
-        {
+    {
+        int serverIndex = FindServer(name);
 
+        if (serverIndex > -1)
+        {
+            for(int i = 0; i < V[serverIndex].P.Count; i++)
+            {
+                if (V[serverIndex].P[i] == w) return false;
+            }
+
+            V[serverIndex].P.Add(w);
+            return true;
         }
+
+        return false;
+
+    }
     // 4 marks
     // Remove the server with the given name by assigning its connections
     // and webpages to the other server
@@ -94,9 +113,24 @@ public class ServerGraph
     // Remove the webpage from the server with the given name
     // Return true if successful; otherwise return false
     public bool RemoveWebPage(string webpage, string name)
-        {
+    {
+        int serverIndex = FindServer(name);
 
+        if (serverIndex > -1)
+        {
+            for (int i = 0; i < V[serverIndex].P.Count; i++)
+            {
+                if (V[serverIndex].P[i].Name == webpage)
+                {
+                    V[serverIndex].P.Remove(V[serverIndex].P[i]);
+                    return true;
+                }
+            }
+            return false;
         }
+
+        return false;
+    }
     // 3 marks
     // Add a connection from one server to another
     // Return true if successful; otherwise return false
@@ -120,9 +154,63 @@ public class ServerGraph
     // two or more disjoint graphs if ever one of them would go down
     // Hint: Use a variation of the depth-first search
     public string[] CriticalServers()
+    {
+        string[] critServers = new string[NumServers];
+        
+        //loop over all servers and test the connectivity of the graph by checking how many servers are visited 
+        for (int i = 1; i <= NumServers; i++)
         {
+            // tally the number of parts of the graph
+            int components = 0;
+            // to track the visited servers
+            bool[] visited = new bool[NumServers + 1];
 
+            // iterate over the broken up graph
+            for (int j = 1; j <= NumServers; j++)
+            {
+                if (j != i)
+                {
+                    // if server j is not visited form a new component.
+                    if (visited[j] == false)
+                    {
+                        components++;
+
+                        // call depthfirstsearch to visit all servers connected to the components
+                        
+                        visited[j] = true;    // Output vertex when marked as visited
+                        Console.WriteLine(j);
+
+                        for (int i = 0; i < NumServers; i++)    // Visit next unvisited adjacent vertex
+                            if (!visited[i] && E[j, i] == true)
+                                DepthFirstSearch(i, visited);
+                    }
+                }
+            }
+
+            // If the number of components is more than 1
+            // after removing the ith vertex, then vertex i
+            // is an articulation point.  
+            if (components > 1)
+            {
+                critServers[i] = V[i].Name;
+            }
         }
+
+        return critServers;
+    }
+
+
+    private void DepthFirstSearch(int j, bool[] visited)
+    { 
+
+        visited[j] = true;    // Output vertex when marked as visited
+        Console.WriteLine(j);
+
+        for (int i = 0; i < NumServers; i++)    // Visit next unvisited adjacent vertex
+            if (!visited[i] && E[j, i] == true)
+                DepthFirstSearch(i, visited);
+    }
+
     // 6 marks
     // Return the shortest path from one server to another
     // Hint: Use a variation of the breadth-first search
