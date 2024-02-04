@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.Reflection.Metadata.Ecma335;
+using System.Xml.Linq;
 
 public class ServerGraph
 {
@@ -73,9 +74,22 @@ public class ServerGraph
     // and webpages to the other server
     // Return true if successful; otherwise return false
     public bool RemoveServer(string name, string other)
+    {
+        int i, j;
+        if ((i = FindServer(name)) > -1)
         {
-
+            NumServers--;
+            V[i] = V[NumServers];
+            for (j = NumServers; j >= 0; j--)
+            {
+                E[j, i] = E[j, NumServers];
+                E[i, j] = E[NumServers, j];
+            }
+            return true;
         }
+
+        return false;
+    }
     // 3 marks (Bonus)
     // Remove the webpage from the server with the given name
     // Return true if successful; otherwise return false
@@ -113,9 +127,48 @@ public class ServerGraph
     // Return the shortest path from one server to another
     // Hint: Use a variation of the breadth-first search
     public int ShortestPath(string from, string to)
-        {
+    {
+        Queue<int> Q = new Queue<int>();
+        bool[] visited = new bool[NumServers];
+        int[] distance = new int[NumServers];
+        int[] predecessor = new int[NumServers];
+        int fromIndex = FindServer(from);
+        int toIndex = FindServer(to);
 
+        for (int i = 0; i < NumServers; i++)
+        {
+            visited[i] = false;
+            distance[i] = int.MaxValue;
+            predecessor[i] = -1;
         }
+
+        visited[fromIndex] = true;
+        distance[fromIndex] = 0;
+        Q.Enqueue(fromIndex);
+
+        while (Q.Count != 0)
+        {
+            int i = Q.Dequeue();
+
+            for (int j = 0; j < NumServers; j++)    // Enqueue unvisited adjacent vertices
+                if (!visited[j] && E[i, j] == true)  
+                {
+                    // Mark vertex as visited
+                    visited[j] = true;   
+                    //set the distance from the start to the current server
+                    distance[j] = distance[i] + 1;
+                    //set the predecessor to the last visited server
+                    predecessor[j] = i;
+                    //queue up the adjacent servers
+                    Q.Enqueue(j);
+
+                    //if reached the destination then the shortest path has been found
+                    if (j == toIndex) return distance[j];
+                    }
+            }
+
+        return -1;
+    }
     // 4 marks
     // Print the name and connections of each server as well as
     // the names of the webpages it hosts
@@ -127,9 +180,9 @@ public class ServerGraph
             Console.WriteLine(V[i]);    //@TODO: write all the associated web pages as well
 
         //print all the connections
-        int i, j;
+        int j;
         for (i = 0; i < NumServers; i++)
-            for (j = 0; j < NumServers; j++)
+            for (j = 0; j < NumServers; j++) 
                 if (E[i, j] == true)
                     Console.WriteLine("(" + V[i] + "," + V[j] + "," + E[i, j] + ")");
     }
