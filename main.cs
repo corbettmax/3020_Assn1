@@ -1,9 +1,9 @@
 ﻿using System;
 namespace _3020_assn1
 {
-	public class Main
+	public class Program
 	{
-		public Main()
+		public static void Main()
 		{
 			// 1.Instantiate a server graph and a web graph.
 			WebGraph wgraph = new WebGraph();

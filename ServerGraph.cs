@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using System.Xml.Linq;
-
+namespace _3020_assn1
+{
 public class ServerGraph
 {
     // 3 marks
@@ -258,19 +259,27 @@ public class ServerGraph
     // the names of the webpages it hosts
     public void PrintGraph()
     {
+            Console.WriteLine("ServerGraph:");
         //print all the servers
         int i;
         for (i = 0; i < NumServers; i++)
-            Console.WriteLine(V[i]);    //@TODO: write all the associated web pages as well
+            Console.WriteLine(V[i].Name);    //@TODO: write all the associated web pages as well
 
         //print all the connections
         int j;
-        for (i = 0; i < NumServers; i++)
-            for (j = 0; j < NumServers; j++) 
-                if (E[i, j] == true)
-                    Console.WriteLine("(" + V[i] + "," + V[j] + "," + E[i, j] + ")");
+            for (i = 0; i < NumServers; i++)
+            {
+                for (j = 0; j < NumServers; j++)
+                {
+                    if (E[i, j] == true)
+                        Console.WriteLine("Connection: (" + V[i].Name + "," + V[j].Name + ")");
+                }
+            }
+            Console.WriteLine("\n\n\n\n\n");
     }
+
     
 }
 
+}
 
