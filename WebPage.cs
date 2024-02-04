@@ -122,7 +122,13 @@ public class WebGraph
     // Hint: Use the method ShortestPath in the class ServerGraph
     public float AvgShortestPaths(string name, ServerGraph S)
     {
-
+        int sum = 0;
+        for (int i = 0; i < P.Count; i++)
+        {
+            string link = P[FindPage(name)].E[i].Name;
+            sum += S.ShortestPath(name, link);
+        }
+        return sum = sum / P.Count;
     }
     // 3 marks
     // Print the name and hyperlinks of each webpage
