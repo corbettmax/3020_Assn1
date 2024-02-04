@@ -1,37 +1,39 @@
 ﻿
 // 5 marks
-public class WebPage
+namespace _3020_assn1
 {
-    public string Name { get; set; }
-    public string Server { get; set; }
-    public List<WebPage> E { get; set; }
+    public class WebPage
+    {
+        public string Name { get; set; }
+        public string Server { get; set; }
+        public List<WebPage> E { get; set; }
 
-public WebPage(string name, string host)
-    {
-        Name = name;
-        Server = host;
-        E = new List<WebPage>();
-    }
-public int FindLink(string name)
-    {
-        for (int i = 0; i < E.Count; i++)
+        public WebPage(string name, string host)
         {
-            if (E[i].Name == name)
-                return i;
+            Name = name;
+            Server = host;
+            E = new List<WebPage>();
         }
-        return -1;
+        public int FindLink(string name)
+        {
+            for (int i = 0; i < E.Count; i++)
+            {
+                if (E[i].Name == name)
+                    return i;
+            }
+            return -1;
+        }
+
     }
-
-}
-public class WebGraph
-{
-    private List<WebPage> P;
-
-    // 2 marks
-    // Create an empty WebGraph
-    public WebGraph()
+    public class WebGraph
     {
-        P = new List<WebPage>();
+        private List<WebPage> P;
+
+        // 2 marks
+        // Create an empty WebGraph
+        public WebGraph()
+        {
+            P = new List<WebPage>();
 
     }
     // 2 marks
@@ -80,7 +82,7 @@ public class WebGraph
                 }
             }
             P.RemoveAt(i);
-            S.RemoveWebPage(name, V[S.FindPage(name)].Name);
+            S.RemoveWebPage(); // NOT DONE
             return true;
         }
         return false;
@@ -143,5 +145,5 @@ public class WebGraph
         Console.ReadLine();
     }
 
+    }
 }
-
