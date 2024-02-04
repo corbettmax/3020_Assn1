@@ -14,6 +14,7 @@ namespace _3020_assn1
 			{
 				sgraph.AddServer($"Server {i}", "Other"); 
 			}
+            Console.WriteLine("List of all servers: ")
 			sgraph.PrintGraph();
 
 			// 3.Add additional connections between servers.
@@ -23,6 +24,8 @@ namespace _3020_assn1
             sgraph.AddConnection("Server 1", "Server 3");
             sgraph.AddConnection("Server 4", "Server 5");
             sgraph.AddConnection("Server 3", "Server 2");
+
+            Console.WriteLine("Servers and all their connections: ")
 			sgraph.PrintGraph();
 
             // 4.Add a number of webpages to various servers.
@@ -30,6 +33,8 @@ namespace _3020_assn1
             {
                 wgraph.AddPage($"Web Page {i}", "Host Name", sgraph);
             }
+
+            Console.WriteLine("List of all web pages: ")
             wgraph.PrintGraph();
 
             // 5.Add and remove hyperlinks between the webpages.
@@ -40,6 +45,8 @@ namespace _3020_assn1
             wgraph.AddLink("Web Page 10", "Web Page 3");
             wgraph.AddLink("Web Page 8", "Web Page 5");
             wgraph.AddLink("Web Page 6", "Web Page 2");
+
+            Console.WriteLine("Web pages and all their connections: ")
             wgraph.PrintGraph();
 
             wgraph.RemoveLink("Web Page 1", "Web Page 4");
@@ -49,6 +56,8 @@ namespace _3020_assn1
             wgraph.RemoveLink("Web Page 10", "Web Page 3");
             wgraph.RemoveLink("Web Page 8", "Web Page 5");
             wgraph.RemoveLink("Web Page 6", "Web Page 2");
+
+            Console.WriteLine("Web pages with all their connections removed:")
             wgraph.PrintGraph();
 
             // 6.Remove both webpages and servers.
@@ -60,6 +69,8 @@ namespace _3020_assn1
             {
                 sgraph.RemoveServer($"Server {i}", "Other");
             }
+
+            Console.WriteLine("Empty set of servers and pages:")
             wgraph.PrintGraph();
             sgraph.PrintGraph();
 
