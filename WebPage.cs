@@ -80,7 +80,7 @@ public class WebGraph
                 }
             }
             P.RemoveAt(i);
-            S.RemoveWebPage(); // NOT DONE
+            S.RemoveWebPage(name, V[S.FindPage(name)].Name);
             return true;
         }
         return false;
