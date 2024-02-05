@@ -64,6 +64,16 @@ namespace _3020_assn1
                     E[i, NumServers] = false;
                     E[NumServers, i] = false;
                 }
+                if (FindServer(other) == -1)
+                {
+                    V[NumServers + 1] = new WebServer(other, new List<WebPage>());
+                    for (int i = 0; i <= NumServers + 1; i++)
+                    {
+                        E[i, NumServers + 1] = false;
+                        E[NumServers + 1, i] = false;
+                    }
+                    NumServers++;
+                }
                 NumServers++;
                 return true;
             }

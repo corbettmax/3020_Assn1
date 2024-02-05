@@ -6,21 +6,21 @@ namespace _3020_assn1
         static void Main(string[] args)
         {
             // 1.Instantiate a server graph and a web graph.
-            Console.WriteLine("Test Step 1");
+            //Console.WriteLine("Test Step 1");
             WebGraph wgraph = new WebGraph();
             ServerGraph sgraph = new ServerGraph();
 
             // 2.Add a number of servers.
-            Console.WriteLine("Test Step 2");
+            //Console.WriteLine("Test Step 2");
 
             for (int i = 1; i <= 5; i++)
             {
-                sgraph.AddServer($"Server {i}", "Other");
+                sgraph.AddServer($"Server {i}", "Server " + i);
             }
-            sgraph.PrintGraph();
+            //sgraph.PrintGraph();
 
             // 3.Add additional connections between servers.
-            Console.WriteLine("Test Step 3");
+            //Console.WriteLine("Test Step 3");
 
             sgraph.AddConnection("Server 1", "Server 4");
             //sgraph.AddConnection("Server 2", "Server 5");
