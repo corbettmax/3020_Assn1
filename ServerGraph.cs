@@ -65,6 +65,7 @@ namespace _3020_assn1
                     E[NumServers, i] = false;
                 }
                 NumServers++;
+                this.AddConnection(name, other);
                 return true;
             }
             return false;
