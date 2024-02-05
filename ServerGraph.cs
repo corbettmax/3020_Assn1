@@ -52,7 +52,7 @@ namespace _3020_assn1
         // Return true if successful; otherwise return false
         public bool AddServer(string name, string other)
         {
-            if (NumServers == V.Length)
+            if (NumServers == V.Length - 1)
             {
                 DoubleCapacity();
             }
