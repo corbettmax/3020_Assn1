@@ -14,7 +14,7 @@ namespace _3020_assn1
             {
                 sgraph.AddServer($"Server {i}", "Server " + i);
             }
-            //sgraph.PrintGraph();
+            sgraph.PrintGraph();
 
             // 3.Add additional connections between servers.
             sgraph.AddConnection("Server 1", "Server 4");
