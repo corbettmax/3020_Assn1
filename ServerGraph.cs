@@ -75,6 +75,7 @@ namespace _3020_assn1
                     NumServers++;
                 }
                 NumServers++;
+                this.AddConnection(name, other);
                 return true;
             }
             return false;
