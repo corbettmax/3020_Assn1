@@ -49,9 +49,9 @@ namespace _3020_assn1
             for(int i = 0; i < V.Length; i++)
             {
                 tempV[i] = V[i];
-                for(int j = 0; j < tempV.Length; j++)
+                for(int j = 0; j < V.Length; j++)
                 {
-                    tempE[i, j] = tempE[i, j];
+                    tempE[i, j] = E[i, j];
                 }
             }
             V = tempV;
@@ -118,8 +118,15 @@ namespace _3020_assn1
         public bool RemoveServer(string name, string other)
         {
             int i, j;
-            if ((i = FindServer(name)) > -1)
+            i = FindServer(name);
+            j = FindServer(other);
+            if (i > -1 && j > -1)
             {
+                for (int q = 0; q < V[i].P.Count; q++)  //remove all the associated web pages
+                {
+                    V[j].P.Add(V[i].P[q]); 
+                }
+
                 NumServers--;
                 V[i] = V[NumServers];
                 for (j = NumServers; j >= 0; j--)
@@ -127,6 +134,8 @@ namespace _3020_assn1
                     E[j, i] = E[j, NumServers];
                     E[i, j] = E[NumServers, j];
                 }
+                
+
                 return true;
             }
 
@@ -283,14 +292,20 @@ namespace _3020_assn1
         // the names of the webpages it hosts
         public void PrintGraph()
         {
+            Console.WriteLine("Server Graph:");
             //print all the servers
             int i;
             for (i = 0; i < NumServers; i++)
-                Console.WriteLine(V[i].Name);    //@TODO: write all the associated web pages as well
-
+            {
+                Console.WriteLine(V[i].Name);   
+                for (int q = 0; q < V[i].P.Count; q++)  //write all the associated web pages as well
+                {
+                    Console.WriteLine("Host to " + V[i].P[q].Name);
+                }
+            }
             //print all the connections
             int j;
-            for (i = 0; i < NumServers; i++)
+            for ( i = 0; i < NumServers; i++)
                 for (j = 0; j < NumServers; j++)
                     if (E[i, j] == true)
                         Console.WriteLine("(Connection: " + V[i].Name + "," + V[j].Name + ")");
