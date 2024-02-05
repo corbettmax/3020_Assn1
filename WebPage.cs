@@ -1,4 +1,4 @@
-﻿
+
 // 5 marks
 namespace _3020_assn1
 {
@@ -35,115 +35,120 @@ namespace _3020_assn1
         {
             P = new List<WebPage>();
 
-    }
-    // 2 marks
-    // Return the index of the webpage with the given name; otherwise return -1
-    private int FindPage(string name)
-    {
-        for (int i = 0; i < P.Count; i++)
-        {
-            if (P[i].Name.Equals(name))
-                return i;
         }
-        return -1;
-    }
-    // 4 marks
-    // Add a webpage with the given name and store it on the host server
-    // Return true if successful; otherwise return false
-    public bool AddPage(string name, string host, ServerGraph S)
-    {
-        if (FindPage(name) == -1)
+        // 2 marks
+        // Return the index of the webpage with the given name; otherwise return -1
+        private int FindPage(string name)
         {
-            WebPage p = new WebPage(name, host);
-            P.Add(p);
-            S.AddWebPage(p, name);
-            return true;
-        }
-        return false;
-    }
-    // 8 marks
-    // Remove the webpage with the given name, including the hyperlinks
-    // from and to the webpage
-    // Return true if successful; otherwise return false
-    public bool RemovePage(string name, ServerGraph S)
-    {
-        int i;
-        if ((i = FindPage(name)) > -1)
-        {
-            for (int j = 0; j < P.Count; j++)
+            for (int i = 0; i < P.Count; i++)
             {
-                for (int k = 0; k < P[j].E.Count; k++)
-                {
-                    if (P[j].E[k].Name.Equals(name))
-                    {
-                        P[j].E.RemoveAt(k);
-                        break;
-                    }
-                }
+                if (P[i].Name.Equals(name))
+                    return i;
             }
-            P.RemoveAt(i);
-            S.RemoveWebPage(name, P[FindPage(name)].Server); // NOT DONE
-            return true;
+            return -1;
         }
-        return false;
-    }
-    // 3 marks
-    // Add a hyperlink from one webpage to another
-    // Return true if successful; otherwise return false
-    public bool AddLink(string from, string to)
-    {
-        int i, j;
-        WebPage e;
-        if ((i = FindPage(from)) > -1 &&  (j = FindPage(to)) > -1)
+        // 4 marks
+        // Add a webpage with the given name and store it on the host server
+        // Return true if successful; otherwise return false
+        public bool AddPage(string name, string host, ServerGraph S)
         {
-            if (P[i].FindLink(to) == -1)
+            if (FindPage(name) == -1)
             {
-                e = new WebPage(P[j].Name, P[j].Server);
-                P[i].E.Add(e);
+                WebPage p = new WebPage(name, host);
+                P.Add(p);
+                S.AddWebPage(p, host);
                 return true;
             }
+            return false;
         }
-        return false;
-    }
-    // 3 marks
-    // Remove a hyperlink from one webpage to another
-    // Return true if successful; otherwise return false
-    public bool RemoveLink(string from, string to)
-    {
-        int i, j;
-        if ((i = FindPage(from)) > -1 && (j = P[i].FindLink(to)) > -1)
+        // 8 marks
+        // Remove the webpage with the given name, including the hyperlinks
+        // from and to the webpage
+        // Return true if successful; otherwise return false
+        public bool RemovePage(string name, ServerGraph S)
         {
-            P[i].E.RemoveAt(j);
-            return true;
+            int i;
+            if ((i = FindPage(name)) > -1)
+            {
+                for (int j = 0; j < P.Count; j++)
+                {
+                    for (int k = 0; k < P[j].E.Count; k++)
+                    {
+                        if (P[j].E[k].Name.Equals(name))
+                        {
+                            P[j].E.RemoveAt(k);
+                            break;
+                        }
+                    }
+                }
+                S.RemoveWebPage(name, P[FindPage(name)].Server); // NOT DONE
+                P.RemoveAt(i);
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
-    // 6 marks
-    // Return the average length of the shortest paths from the webpage with
-    // given name to each of its hyperlinks
-    // Hint: Use the method ShortestPath in the class ServerGraph
-    public float AvgShortestPaths(string name, ServerGraph S)
-    {
-        int sum = 0;
-        for (int i = 0; i < P.Count; i++)
+        // 3 marks
+        // Add a hyperlink from one webpage to another
+        // Return true if successful; otherwise return false
+        public bool AddLink(string from, string to)
         {
-            string link = P[FindPage(name)].E[i].Name;
-            sum += S.ShortestPath(name, link);
+            int i, j;
+            WebPage e;
+            if ((i = FindPage(from)) > -1 && (j = FindPage(to)) > -1)
+            {
+                if (P[i].FindLink(to) == -1)
+                {
+                    e = new WebPage(P[j].Name, P[j].Server);
+                    P[i].E.Add(e);
+                    return true;
+                }
+            }
+            return false;
         }
-        return sum = sum / P.Count;
-    }
-    // 3 marks
-    // Print the name and hyperlinks of each webpage
-    public void PrintGraph()
-    {
-        for (int i = 0; i < P.Count; i++)
+        // 3 marks
+        // Remove a hyperlink from one webpage to another
+        // Return true if successful; otherwise return false
+        public bool RemoveLink(string from, string to)
         {
-            Console.WriteLine(P[i].Name);
-            for (int j = 0; j < P[i].E.Count; j++)
-                Console.WriteLine("(" + P[i].Name + "," + P[i].E[j].Name + ")");
+            int i, j;
+            if ((i = FindPage(from)) > -1 && (j = P[i].FindLink(to)) > -1)
+            {
+                P[i].E.RemoveAt(j);
+                return true;
+            }
+            return false;
         }
-        Console.ReadLine();
-    }
+        // 6 marks
+        // Return the average length of the shortest paths from the webpage with
+        // given name to each of its hyperlinks
+        // Hint: Use the method ShortestPath in the class ServerGraph
+        public float AvgShortestPaths(string name, ServerGraph S)
+        {
+            float sum = 0;
+            if (P.Count == 0)
+                return 0;
+            for (int i = 0; i < P[FindPage(name)].E.Count; i++)
+            {
+                string link = P[FindPage(name)].E[i].Server;
+                sum += S.ShortestPath(P[FindPage(name)].Server, link);
+            }
+            return sum = sum / P[FindPage(name)].E.Count;
+        }
+        // 3 marks
+        // Print the name and hyperlinks of each webpage
+        public void PrintGraph()
+        {
+            if (P.Count > 0)
+            {
+                for (int i = 0; i < P.Count; i++)
+                {
+                    Console.WriteLine(P[i].Name);
+                    for (int j = 0; j < P[i].E.Count; j++)
+                        Console.WriteLine("(" + P[i].Name + "," + P[i].E[j].Name + ")");
+                }
+            }
+            Console.ReadLine();
+        }
 
     }
 }
