@@ -1,43 +1,47 @@
-﻿using System;
+using System;
 namespace _3020_assn1
 {
-	public class Program
-	{
-		public static void Main()
-		{
-			// 1.Instantiate a server graph and a web graph.
-			WebGraph wgraph = new WebGraph();
-			ServerGraph sgraph = new ServerGraph();
+    public class main
+    {
+        static void Main(string[] args)
+        {
+            // 1.Instantiate a server graph and a web graph.
+            Console.WriteLine("Test Step 1");
+            WebGraph wgraph = new WebGraph();
+            ServerGraph sgraph = new ServerGraph();
 
-			// 2.Add a number of servers.
-			for (int i = 1; i <= 5; i++)
-			{
-				sgraph.AddServer($"Server {i}", "Other"); 
-			}
-            Console.WriteLine("List of all servers: ")
-			sgraph.PrintGraph();
+            // 2.Add a number of servers.
+            Console.WriteLine("Test Step 2");
 
-			// 3.Add additional connections between servers.
-			sgraph.AddConnection("Server 1", "Server 4");
-            sgraph.AddConnection("Server 2", "Server 5");
-            sgraph.AddConnection("Server 5", "Server 3");
+            for (int i = 1; i <= 5; i++)
+            {
+                sgraph.AddServer($"Server {i}", "Other");
+            }
+            sgraph.PrintGraph();
+
+            // 3.Add additional connections between servers.
+            Console.WriteLine("Test Step 3");
+
+            sgraph.AddConnection("Server 1", "Server 4");
+            //sgraph.AddConnection("Server 2", "Server 5");
+            //sgraph.AddConnection("Server 5", "Server 3");
             sgraph.AddConnection("Server 1", "Server 3");
             sgraph.AddConnection("Server 4", "Server 5");
             sgraph.AddConnection("Server 3", "Server 2");
-
-            Console.WriteLine("Servers and all their connections: ")
-			sgraph.PrintGraph();
+            sgraph.PrintGraph();
 
             // 4.Add a number of webpages to various servers.
+            Console.WriteLine("Test Step 4");
+
             for (int i = 1; i <= 10; i++)
             {
-                wgraph.AddPage($"Web Page {i}", "Host Name", sgraph);
+                wgraph.AddPage($"Web Page {i}", "Server " + i,sgraph);
             }
-
-            Console.WriteLine("List of all web pages: ")
             wgraph.PrintGraph();
 
             // 5.Add and remove hyperlinks between the webpages.
+            Console.WriteLine("Test Step 5");
+
             wgraph.AddLink("Web Page 1", "Web Page 4");
             wgraph.AddLink("Web Page 2", "Web Page 5");
             wgraph.AddLink("Web Page 6", "Web Page 1");
@@ -45,10 +49,10 @@ namespace _3020_assn1
             wgraph.AddLink("Web Page 10", "Web Page 3");
             wgraph.AddLink("Web Page 8", "Web Page 5");
             wgraph.AddLink("Web Page 6", "Web Page 2");
-
-            Console.WriteLine("Web pages and all their connections: ")
+            wgraph.AddLink("Web Page 1", "Web Page 2");
             wgraph.PrintGraph();
 
+            /*
             wgraph.RemoveLink("Web Page 1", "Web Page 4");
             wgraph.RemoveLink("Web Page 2", "Web Page 5");
             wgraph.RemoveLink("Web Page 6", "Web Page 1");
@@ -56,11 +60,12 @@ namespace _3020_assn1
             wgraph.RemoveLink("Web Page 10", "Web Page 3");
             wgraph.RemoveLink("Web Page 8", "Web Page 5");
             wgraph.RemoveLink("Web Page 6", "Web Page 2");
-
-            Console.WriteLine("Web pages with all their connections removed:")
             wgraph.PrintGraph();
+            */
 
             // 6.Remove both webpages and servers.
+            /*
+            Console.WriteLine("Test Step 6");
             for (int i = 1; i <= 10; i++)
             {
                 wgraph.RemovePage($"Web Page {i}", sgraph);
@@ -69,17 +74,22 @@ namespace _3020_assn1
             {
                 sgraph.RemoveServer($"Server {i}", "Other");
             }
-
-            Console.WriteLine("Empty set of servers and pages:")
             wgraph.PrintGraph();
             sgraph.PrintGraph();
+            */
 
             // 7.Determine the critical servers of the remaining Internet.
-            Console.WriteLine(sgraph.CriticalServers());
+            Console.WriteLine("Test Step 7: Critical Servers");
+            sgraph.PrintGraph();
+            string[] criticalServers = sgraph.CriticalServers();
+            for (int i = 0; i < criticalServers.Length; i++)
+                if (criticalServers[i] != null)
+                    Console.WriteLine(criticalServers[i]);
 
             // 8.Calculate the average shortest distance to the hyperlinks of a given webpage.
-            wgraph.AvgShortestPaths("Web Page 1", sgraph);
+            Console.WriteLine("Test Step 8: AverageShortestPath");
+            Console.WriteLine("AverageShortestPath (WP1): " + wgraph.AvgShortestPaths("Web Page 1", sgraph));
+            Console.WriteLine("Done");
         }
-	}
+    }
 }
-
