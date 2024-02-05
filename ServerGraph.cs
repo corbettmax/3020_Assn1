@@ -46,17 +46,27 @@ namespace _3020_assn1
         {
             WebServer[] tempV = new WebServer[V.Length * 2];
             bool[,] tempE = new bool[V.Length * 2, V.Length * 2];
+            for(int i = 0; i < V.Length; i++)
+            {
+                tempV[i] = V[i];
+                for(int j = 0; j < tempV.Length; j++)
+                {
+                    tempE[i, j] = tempE[i, j];
+                }
+            }
+            V = tempV;
+            E = tempE;
         }
         // 3 marks
         // Add a server with the given name and connect it to the other server
         // Return true if successful; otherwise return false
         public bool AddServer(string name, string other)
         {
-            if (NumServers == V.Length)
+            if (NumServers == V.Length - 1)
             {
                 DoubleCapacity();
             }
-            if (FindServer(name) == -1)
+            if (FindServer(name) == - 1)
             {
                 V[NumServers] = new WebServer(name, new List<WebPage>());
                 for (int i = 0; i <= NumServers; i++)
@@ -64,7 +74,18 @@ namespace _3020_assn1
                     E[i, NumServers] = false;
                     E[NumServers, i] = false;
                 }
+                if (FindServer(other) == -1)
+                {
+                    V[NumServers + 1] = new WebServer(other, new List<WebPage>());
+                    for (int i = 0; i <= NumServers + 1; i++)
+                    {
+                        E[i, NumServers + 1] = false;
+                        E[NumServers + 1, i] = false;
+                    }
+                    NumServers++;
+                }
                 NumServers++;
+                this.AddConnection(name, other);
                 return true;
             }
             return false;
