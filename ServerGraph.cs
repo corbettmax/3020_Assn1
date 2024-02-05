@@ -46,6 +46,16 @@ namespace _3020_assn1
         {
             WebServer[] tempV = new WebServer[V.Length * 2];
             bool[,] tempE = new bool[V.Length * 2, V.Length * 2];
+            for(int i = 0; i < V.Length; i++)
+            {
+                tempV[i] = V[i];
+                for(int j = 0; j < tempV.Length; j++)
+                {
+                    tempE[i, j] = tempE[i, j];
+                }
+            }
+            V = tempV;
+            E = tempE;
         }
         // 3 marks
         // Add a server with the given name and connect it to the other server
@@ -56,7 +66,7 @@ namespace _3020_assn1
             {
                 DoubleCapacity();
             }
-            if (FindServer(name) == -1)
+            if (FindServer(name) == - 1)
             {
                 V[NumServers] = new WebServer(name, new List<WebPage>());
                 for (int i = 0; i <= NumServers; i++)
